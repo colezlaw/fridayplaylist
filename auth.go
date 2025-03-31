@@ -9,6 +9,7 @@ import (
 )
 
 type Client struct {
+	base_url     string
 	auth_url     string
 	access_token string
 }
