@@ -1,0 +1,97 @@
+[
+    {
+        "href": "https://api.spotify.com/v1/users/jshields14/playlists?offset=0&limit=1",
+        "limit": 1,
+        "next": "@@TEST_SERVER_URL@@/v1/users/jshields14/playlists?offset=1&limit=1",
+        "offset": 0,
+        "previous": null,
+        "total": 300,
+        "items": [
+            {
+                "collaborative": false,
+                "description": "",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/playlist/677uNJbdPbJC7WXjbxgbHy"
+                },
+                "href": "https://api.spotify.com/v1/playlists/677uNJbdPbJC7WXjbxgbHy",
+                "id": "677uNJbdPbJC7WXjbxgbHy",
+                "images": [
+                    {
+                        "height": 640,
+                        "url": "https://mosaic.scdn.co/640/ab67616d00001e0243511b8c20112757edddc7baab67616d00001e025274788f34fc7656d2856dfdab67616d00001e027cbbd0328713a05ea51d3eafab67616d00001e029a95e89d24214b94de36ccf7",
+                        "width": 640
+                    },
+                    {
+                        "height": 300,
+                        "url": "https://mosaic.scdn.co/300/ab67616d00001e0243511b8c20112757edddc7baab67616d00001e025274788f34fc7656d2856dfdab67616d00001e027cbbd0328713a05ea51d3eafab67616d00001e029a95e89d24214b94de36ccf7",
+                        "width": 300
+                    },
+                    {
+                        "height": 60,
+                        "url": "https://mosaic.scdn.co/60/ab67616d00001e0243511b8c20112757edddc7baab67616d00001e025274788f34fc7656d2856dfdab67616d00001e027cbbd0328713a05ea51d3eafab67616d00001e029a95e89d24214b94de36ccf7",
+                        "width": 60
+                    }
+                ],
+                "name": "Condiments",
+                "owner": {
+                    "display_name": "jshields14",
+                    "external_urls": {
+                        "spotify": "https://open.spotify.com/user/jshields14"
+                    },
+                    "href": "https://api.spotify.com/v1/users/jshields14",
+                    "id": "jshields14",
+                    "type": "user",
+                    "uri": "spotify:user:jshields14"
+                },
+                "primary_color": null,
+                "public": true,
+                "snapshot_id": "AAAAGqKFHc7lP/guczTVBpB8npsEMaaz",
+                "tracks": {
+                    "href": "https://api.spotify.com/v1/playlists/677uNJbdPbJC7WXjbxgbHy/tracks",
+                    "total": 24
+                },
+                "type": "playlist",
+                "uri": "spotify:playlist:677uNJbdPbJC7WXjbxgbHy"
+            }
+        ]
+    },
+    {
+        "href": "https://api.spotify.com/v1/users/jshields14/playlists?offset=1&limit=1",
+        "limit": 1,
+        "offset": 1,
+        "previous": "https://api.spotify.com/v1/users/jshields14/playlists?offset=0&limit=1",
+        "total": 300,
+        "items": [
+            {
+                "collaborative": false,
+                "description": "",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/playlist/0A8PQwpwug19lDUSNzRB64"
+                },
+                "href": "https://api.spotify.com/v1/playlists/0A8PQwpwug19lDUSNzRB64",
+                "id": "0A8PQwpwug19lDUSNzRB64",
+                "images": null,
+                "name": "My Playlist #304",
+                "owner": {
+                    "display_name": "jshields14",
+                    "external_urls": {
+                        "spotify": "https://open.spotify.com/user/jshields14"
+                    },
+                    "href": "https://api.spotify.com/v1/users/jshields14",
+                    "id": "jshields14",
+                    "type": "user",
+                    "uri": "spotify:user:jshields14"
+                },
+                "primary_color": null,
+                "public": true,
+                "snapshot_id": "AAAAATM1Nuy1HFaMKUxipAvhtV41qV0q",
+                "tracks": {
+                    "href": "https://api.spotify.com/v1/playlists/0A8PQwpwug19lDUSNzRB64/tracks",
+                    "total": 0
+                },
+                "type": "playlist",
+                "uri": "spotify:playlist:0A8PQwpwug19lDUSNzRB64"
+            }
+        ]
+    }
+]
