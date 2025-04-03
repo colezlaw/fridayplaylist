@@ -2,25 +2,37 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 
 	fridayplaylist "github.com/colezlaw/fridayPlaylist"
 )
 
-func main() {
+func run(args []string, stdout io.Writer, clientId, clientSecret string) error {
+	log.SetOutput(stdout)
+	flags := flag.NewFlagSet(args[0], flag.ExitOnError)
+	var (
+		fn   = flags.String("f", "output.csv", "output filename")
+		user = flags.String("user", "jshields14", "username for playlists to collect")
+	)
+	if err := flags.Parse(args[1:]); err != nil {
+		return err
+	}
+
 	c := fridayplaylist.Client{}
-	if err := c.GetToken(os.Getenv("CLIENT_ID"), os.Getenv("CLIENT_SECRET")); err != nil {
-		log.Fatalf("gettoken: %v", err)
+	if err := c.GetToken(clientId, clientSecret); err != nil {
+		return fmt.Errorf("gettoken: %w", err)
 	}
 
-	playlists, err := c.GetPlaylistsForUser("jshields14")
+	playlists, err := c.GetPlaylistsForUser(*user)
 	if err != nil {
-		log.Fatalf("getplaylistsforuser: %v", err)
+		return fmt.Errorf("getplaylistsforuser: %v", err)
 	}
 
-	of, err := os.Create("output.csv")
+	of, err := os.Create(*fn)
 	if err != nil {
 		log.Fatalf("create: %v", err)
 	}
@@ -40,5 +52,14 @@ func main() {
 		for _, track := range tracks {
 			w.Write([]string{playlist.Name, track.Name, track.Artist, track.Album.ReleaseDate})
 		}
+	}
+
+	return nil
+}
+
+func main() {
+	if err := run(os.Args, os.Stdout, os.Getenv("CLIENT_ID"), os.Getenv("CLIENT_SECRET")); err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		os.Exit(1)
 	}
 }
