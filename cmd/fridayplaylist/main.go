@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	fridayplaylist "github.com/colezlaw/fridayPlaylist"
 )
@@ -39,11 +38,7 @@ func main() {
 			log.Fatalf("gettracks: %v", err)
 		}
 		for _, track := range tracks {
-			artists := make([]string, len(track.Artists))
-			for i, a := range track.Artists {
-				artists[i] = a.Name
-			}
-			w.Write([]string{playlist.Name, track.Name, strings.Join(artists, ","), track.Album.ReleaseDate})
+			w.Write([]string{playlist.Name, track.Name, track.Artist, track.Album.ReleaseDate})
 		}
 	}
 }

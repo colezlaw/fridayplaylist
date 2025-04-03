@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type Playlist struct {
@@ -31,9 +32,29 @@ type Artist struct {
 }
 
 type Track struct {
-	Name    string   `json:"name"`
-	Artists []Artist `json:"artists"`
-	Album   Album    `json:"album"`
+	Name   string `json:"name"`
+	Artist string
+	Album  Album `json:"album"`
+}
+
+func (t *Track) UnmarshalJSON(b []byte) error {
+	tgt := struct {
+		Name    string   `json:"name"`
+		Artists []Artist `json:"artists"`
+		Album   Album    `json:"album"`
+	}{}
+	if err := json.Unmarshal(b, &tgt); err != nil {
+		return fmt.Errorf("unable to unmarshal album: %w", err)
+	}
+	t.Name = tgt.Name
+	t.Album = tgt.Album
+	artists := make([]string, len(tgt.Artists))
+	for i, a := range tgt.Artists {
+		artists[i] = a.Name
+	}
+	t.Artist = strings.Join(artists, ",")
+
+	return nil
 }
 
 type GetPlaylistTracksResult struct {
