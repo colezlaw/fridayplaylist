@@ -22,7 +22,7 @@ func TestGetToken(t *testing.T) {
 	defer s.Close()
 
 	c := &Client{
-		auth_url: s.URL,
+		AuthURL: s.URL,
 	}
 
 	// Act

@@ -9,20 +9,20 @@ import (
 )
 
 type Client struct {
-	base_url     string
-	auth_url     string
+	BaseURL      string
+	AuthURL      string
 	access_token string
 }
 
 func (c *Client) GetToken(clientID, clientSecret string) error {
-	if c.auth_url == "" {
-		c.auth_url = "https://accounts.spotify.com/api/token"
+	if c.AuthURL == "" {
+		c.AuthURL = "https://accounts.spotify.com/api/token"
 	}
 
 	param := url.Values{
 		"grant_type": []string{"client_credentials"},
 	}
-	req, err := http.NewRequest(http.MethodPost, c.auth_url, strings.NewReader(param.Encode()))
+	req, err := http.NewRequest(http.MethodPost, c.AuthURL, strings.NewReader(param.Encode()))
 	if err != nil {
 		return fmt.Errorf("error creating request: %w", err)
 	}

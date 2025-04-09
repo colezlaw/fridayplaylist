@@ -67,15 +67,15 @@ type GetPlaylistTracksResult struct {
 func (c *Client) GetTracksForPlaylist(id string) ([]Track, error) {
 	tracks := make([]Track, 0)
 
-	if c.base_url == "" {
-		c.base_url = "https://api.spotify.com/v1/"
+	if c.BaseURL == "" {
+		c.BaseURL = "https://api.spotify.com/v1/"
 	}
 
 	if c.access_token == "" {
 		return tracks, fmt.Errorf("you must get a token. Call GetToken")
 	}
 
-	next := c.base_url + "playlists/" + id + "/tracks?limit=50"
+	next := c.BaseURL + "playlists/" + id + "/tracks?limit=50"
 
 	for next != "" {
 		req, err := http.NewRequest(http.MethodGet, next, nil)
@@ -117,12 +117,13 @@ func (c *Client) GetPlaylistsForUser(username string) ([]Playlist, error) {
 		return result, fmt.Errorf("you must authenticate first - call GetToken")
 	}
 
-	if c.base_url == "" {
-		c.base_url = "https://api.spotify.com/v1/"
+	if c.BaseURL == "" {
+		c.BaseURL = "https://api.spotify.com/v1/"
 	}
 
-	next := c.base_url + "users/" + username + "/playlists?limit=50"
+	next := c.BaseURL + "users/" + username + "/playlists?limit=50"
 	for next != "" {
+		fmt.Printf("Got next of %s\n", next)
 		req, err := http.NewRequest(http.MethodGet, next, nil)
 		if err != nil {
 			return []Playlist{}, fmt.Errorf("unable to create request: %w", err)

@@ -39,7 +39,7 @@ func TestGetPlaylistForUser(t *testing.T) {
 
 	c := &Client{
 		access_token: wantToken,
-		base_url:     s.URL + "/",
+		BaseURL:      s.URL + "/",
 	}
 
 	// Act
@@ -90,7 +90,7 @@ func TestGetTracks(t *testing.T) {
 
 	c := &Client{
 		access_token: wantToken,
-		base_url:     s.URL + "/",
+		BaseURL:      s.URL + "/",
 	}
 
 	// Act
