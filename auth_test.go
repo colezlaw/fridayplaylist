@@ -1,6 +1,7 @@
 package fridayplaylist
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -26,7 +27,7 @@ func TestGetToken(t *testing.T) {
 	}
 
 	// Act
-	err := c.GetToken("TROGDOR", "BURNINATOR")
+	err := c.GetToken(context.TODO(), "TROGDOR", "BURNINATOR")
 
 	// Assert
 	if err != nil {

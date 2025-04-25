@@ -2,6 +2,7 @@ package fridayplaylist
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -43,7 +44,7 @@ func TestGetPlaylistForUser(t *testing.T) {
 	}
 
 	// Act
-	playlists, err := c.GetPlaylistsForUser("someuser")
+	playlists, err := c.GetPlaylistsForUser(context.TODO(), "someuser")
 
 	// Assert
 	if err != nil {
@@ -94,7 +95,7 @@ func TestGetTracks(t *testing.T) {
 	}
 
 	// Act
-	tracks, err := c.GetTracksForPlaylist("someplaylist")
+	tracks, err := c.GetTracksForPlaylist(context.TODO(), "someplaylist")
 
 	// Assert
 	if err != nil {

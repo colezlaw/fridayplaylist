@@ -2,12 +2,14 @@ package fridayplaylist
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 type Playlist struct {
@@ -64,7 +66,7 @@ type GetPlaylistTracksResult struct {
 	}
 }
 
-func (c *Client) GetTracksForPlaylist(id string) ([]Track, error) {
+func (c *Client) GetTracksForPlaylist(ctx context.Context, id string) ([]Track, error) {
 	tracks := make([]Track, 0)
 
 	if c.BaseURL == "" {
@@ -78,7 +80,9 @@ func (c *Client) GetTracksForPlaylist(id string) ([]Track, error) {
 	next := c.BaseURL + "playlists/" + id + "/tracks?limit=50"
 
 	for next != "" {
-		req, err := http.NewRequest(http.MethodGet, next, nil)
+		ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+		defer cancel()
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, next, nil)
 		if err != nil {
 			return tracks, fmt.Errorf("unable to create request: %w", err)
 		}
@@ -110,7 +114,7 @@ func (c *Client) GetTracksForPlaylist(id string) ([]Track, error) {
 	return tracks, nil
 }
 
-func (c *Client) GetPlaylistsForUser(username string) ([]Playlist, error) {
+func (c *Client) GetPlaylistsForUser(ctx context.Context, username string) ([]Playlist, error) {
 	result := make([]Playlist, 0)
 
 	if c.access_token == "" {
@@ -123,8 +127,9 @@ func (c *Client) GetPlaylistsForUser(username string) ([]Playlist, error) {
 
 	next := c.BaseURL + "users/" + username + "/playlists?limit=50"
 	for next != "" {
-		fmt.Printf("Got next of %s\n", next)
-		req, err := http.NewRequest(http.MethodGet, next, nil)
+		ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+		defer cancel()
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, next, nil)
 		if err != nil {
 			return []Playlist{}, fmt.Errorf("unable to create request: %w", err)
 		}

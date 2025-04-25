@@ -2,41 +2,42 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"testing"
 
 	fridayplaylist "github.com/colezlaw/fridayPlaylist"
 )
 
 type MockPlaylistClient struct {
-	getPlaylists func(string) ([]fridayplaylist.Playlist, error)
-	getTracks    func(string) ([]fridayplaylist.Track, error)
+	getPlaylists func(context.Context, string) ([]fridayplaylist.Playlist, error)
+	getTracks    func(context.Context, string) ([]fridayplaylist.Track, error)
 }
 
-func (m *MockPlaylistClient) GetPlaylistsForUser(user string) ([]fridayplaylist.Playlist, error) {
+func (m *MockPlaylistClient) GetPlaylistsForUser(ctx context.Context, user string) ([]fridayplaylist.Playlist, error) {
 	if m.getPlaylists == nil {
 		return []fridayplaylist.Playlist{}, nil
 	}
 
-	return m.getPlaylists(user)
+	return m.getPlaylists(context.TODO(), user)
 }
 
-func (m *MockPlaylistClient) GetTracksForPlaylist(playlistID string) ([]fridayplaylist.Track, error) {
+func (m *MockPlaylistClient) GetTracksForPlaylist(ctx context.Context, playlistID string) ([]fridayplaylist.Track, error) {
 	if m.getTracks == nil {
 		return []fridayplaylist.Track{}, nil
 	}
 
-	return m.getTracks(playlistID)
+	return m.getTracks(context.TODO(), playlistID)
 }
 
 func TestRun(t *testing.T) {
 	// Arrange
 	mock := &MockPlaylistClient{}
-	mock.getPlaylists = func(u string) ([]fridayplaylist.Playlist, error) {
+	mock.getPlaylists = func(ctx context.Context, u string) ([]fridayplaylist.Playlist, error) {
 		return []fridayplaylist.Playlist{
 			{Name: "As the World Turns", ID: "1234"},
 		}, nil
 	}
-	mock.getTracks = func(p string) ([]fridayplaylist.Track, error) {
+	mock.getTracks = func(ctx context.Context, p string) ([]fridayplaylist.Track, error) {
 		return []fridayplaylist.Track{
 			{
 				Name:   "As the Worm Turns",

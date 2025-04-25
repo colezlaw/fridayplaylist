@@ -1,19 +1,21 @@
 package main
 
 import (
+	"context"
 	"encoding/csv"
 	"flag"
 	"fmt"
 	"io"
 	"log"
 	"os"
+	"time"
 
 	fridayplaylist "github.com/colezlaw/fridayPlaylist"
 )
 
 type PlaylistClient interface {
-	GetPlaylistsForUser(string) ([]fridayplaylist.Playlist, error)
-	GetTracksForPlaylist(string) ([]fridayplaylist.Track, error)
+	GetPlaylistsForUser(context.Context, string) ([]fridayplaylist.Playlist, error)
+	GetTracksForPlaylist(context.Context, string) ([]fridayplaylist.Track, error)
 }
 
 func run(args []string, stdout io.Writer, c PlaylistClient) error {
@@ -26,8 +28,10 @@ func run(args []string, stdout io.Writer, c PlaylistClient) error {
 	if err := flags.Parse(args[1:]); err != nil {
 		return err
 	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	defer cancel()
 
-	playlists, err := c.GetPlaylistsForUser(*user)
+	playlists, err := c.GetPlaylistsForUser(ctx, *user)
 	if err != nil {
 		return fmt.Errorf("getplaylistsforuser: %w", err)
 	}
@@ -44,9 +48,8 @@ func run(args []string, stdout io.Writer, c PlaylistClient) error {
 	w.Write([]string{"PLAYLIST", "SONG", "ARTIST", "RELEASED"})
 
 	for _, playlist := range playlists {
-		fmt.Printf("%#v\n", playlist)
 		fmt.Println(playlist.Name)
-		tracks, err := c.GetTracksForPlaylist(playlist.ID)
+		tracks, err := c.GetTracksForPlaylist(ctx, playlist.ID)
 		if err != nil {
 			return fmt.Errorf("gettracks: %w", err)
 		}
@@ -60,7 +63,7 @@ func run(args []string, stdout io.Writer, c PlaylistClient) error {
 
 func main() {
 	c := &fridayplaylist.Client{}
-	if err := c.GetToken(os.Getenv("CLIENT_ID"), os.Getenv("CLIENT_SECRET")); err != nil {
+	if err := c.GetToken(context.Background(), os.Getenv("CLIENT_ID"), os.Getenv("CLIENT_SECRET")); err != nil {
 		fmt.Fprintf(os.Stderr, "unable to get token: %v", err)
 	}
 	if err := run(os.Args, os.Stdout, c); err != nil {
