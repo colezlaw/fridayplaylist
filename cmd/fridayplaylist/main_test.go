@@ -5,7 +5,7 @@ import (
 	"context"
 	"testing"
 
-	fridayplaylist "github.com/colezlaw/fridayPlaylist"
+	"github.com/colezlaw/fridayplaylist"
 )
 
 type MockPlaylistClient struct {

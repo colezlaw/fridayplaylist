@@ -1,3 +1,3 @@
-module github.com/colezlaw/fridayPlaylist
+module github.com/colezlaw/fridayplaylist
 
 go 1.24.1
